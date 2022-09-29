@@ -1,0 +1,7 @@
+target*
+.ebextensions*
+.settings*
+bin*
+.classpath*
+.Buildfile
+.project

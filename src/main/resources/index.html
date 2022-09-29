@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <script>
+  	function setDefaults(selectObject) {
+	switch (selectObject.value) {
+		case 'nes':
+			document.getElementById("x_res").value = 256;
+			document.getElementById("tile_pal_size").value = 3;
+			document.getElementById("tile_size").value = 16;
+			document.getElementById("master_pal_size").value = 27;
+			break;
+		case 'snes':
+			document.getElementById("x_res").value = 256;
+			document.getElementById("tile_pal_size").value = 15;
+			document.getElementById("tile_size").value = 16;
+			document.getElementById("master_pal_size").value = 256;
+			break;
+		case 'genesis':
+			document.getElementById("x_res").value = 320;
+			document.getElementById("tile_pal_size").value = 15;
+			document.getElementById("tile_size").value = 16;
+			document.getElementById("master_pal_size").value = 64;
+			break;
+		case '2600':
+			document.getElementById("x_res").value = 160;
+			document.getElementById("tile_pal_size").value = 3;
+			document.getElementById("tile_size").value = 160;
+			document.getElementById("master_pal_size").value = 8;
+			break;
+		case 'neogeo':
+			document.getElementById("x_res").value = 320;
+			document.getElementById("tile_pal_size").value = 15;
+			document.getElementById("tile_size").value = 16;
+			document.getElementById("master_pal_size").value = 146;
+			break; 
+		case 'gamegear':
+			document.getElementById("x_res").value = 160;
+			document.getElementById("tile_pal_size").value = 15;
+			document.getElementById("tile_size").value = 8;
+			document.getElementById("master_pal_size").value = 32;
+			break; 
+	}
+		var value = selectObject.value;  
+		console.log(value);
+	}
+  </script>
+    <title>NESifier (or any old sprite based console!)</title>
+  </head>
+  <body>
+	<form action="NesifyServlet" method="post" enctype="multipart/form-data">
+		Select Image to Upload (Max Size 7 MB):<input type="file" name="fileName">
+		<br>
+		<select id="defaultCombo" onchange="setDefaults(this)">
+			<option value="nes">NES Defaults</option>
+			<option value="snes">SNES Defaults</option>
+			<option value="genesis">Genesis Defaults</option>
+			<option value="neogeo">NeoGeo</option>
+			<option value="2600">Atari 2600 Defaults</option>
+			<option value="gamegear">Game Gear</option>
+		</select>
+		<br>
+		<br>Select X Resolution <input id="x_res" type="number" name="x_res" value=256>
+		<br>Select tile palette size <input id ="tile_pal_size" type="number" name="tile_pal_size" value=3>
+		<br>Select tile size <input id="tile_size" type="number" name="tile_size" value=16>
+		<br>Select master palette size <input id ="master_pal_size" type="number" name="master_pal_size" value=27>
+		<br><br>
+		<br>Default X resolutions (width of image): NES 256, SNES 256, Sega Genesis 320, Atari-2600 160
+		<br>Default tile palette sizes (colors a single tile's selection may include): NES 3, SNES 15, Sega Genesis 15, Atari-2600 3
+		<br>Default tile sizes (size of single tile): NES 8 for sprites 16 for images, SNES 8 for sprites 16 for images, Sega Genesis 8 16 24 or 32, Atari-2600 160
+		<br>Default master palette sizes (total count of available colors for all tile palettes): NES 27, SNES 256, Sega Genesis 64, Atari-2600 8
+		<br><br>
+		<input type="submit" value="Upload">
+	</form>
+  </body>
+</html>
+
