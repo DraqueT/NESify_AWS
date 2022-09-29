@@ -110,7 +110,7 @@ public class Application extends AbstractHandler
 		} catch (Exception e) {
 			response.setContentType("text/html");
 			response.getWriter().println("Error: " + e.getLocalizedMessage());
-			e.printStackTrace(response.getWriter());
+			// e.printStackTrace(response.getWriter());
 		}
 		
 	}
@@ -152,17 +152,12 @@ public class Application extends AbstractHandler
 
         String pathInfo = request.getPathInfo();
         
-        try {
-	        if (pathInfo.equalsIgnoreCase("/crontask")) {
-	            handleCronTask(request, response);
-	        } else if (pathInfo.endsWith("/NesifyServlet")) {
-	        	handleHttpNesify(request, response);
-	        } else {
-	            handleHttpRequest(request, response);
-	        }
-        } catch (Exception e) {
-        	response.getOutputStream().println("YO YO YO BROOKLYN YOU SUCK");
-        	e.printStackTrace(response.getWriter());
+        if (pathInfo.equalsIgnoreCase("/crontask")) {
+            handleCronTask(request, response);
+        } else if (pathInfo.endsWith("/NesifyServlet")) {
+        	handleHttpNesify(request, response);
+        } else {
+            handleHttpRequest(request, response);
         }
     }
 

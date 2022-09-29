@@ -48,8 +48,10 @@
     <title>NESifier (or any old sprite based console!)</title>
   </head>
   <body>
+  	<p>This is a fun little tool that will take an image and convert it into one that could theoretically be displayed on an old console like the NES or SNES. The dropdown makes some preset values populate. Cartoon images and illustrations work the best. Enjoy! :3</p>
+  
 	<form action="NesifyServlet" method="post" enctype="multipart/form-data">
-		Select Image to Upload (Max Size 7 MB):<input type="file" name="fileName">
+		Select Image to Upload (Max Size 1 MB or 2,000,000 pixels):<input type="file" name="fileName">
 		<br>
 		<select id="defaultCombo" onchange="setDefaults(this)">
 			<option value="nes">NES Defaults</option>
@@ -65,13 +67,11 @@
 		<br>Select tile size <input id="tile_size" type="number" name="tile_size" value=16>
 		<br>Select master palette size <input id ="master_pal_size" type="number" name="master_pal_size" value=27>
 		<br><br>
-		<br>Default X resolutions (width of image): NES 256, SNES 256, Sega Genesis 320, Atari-2600 160
-		<br>Default tile palette sizes (colors a single tile's selection may include): NES 3, SNES 15, Sega Genesis 15, Atari-2600 3
-		<br>Default tile sizes (size of single tile): NES 8 for sprites 16 for images, SNES 8 for sprites 16 for images, Sega Genesis 8 16 24 or 32, Atari-2600 160
-		<br>Default master palette sizes (total count of available colors for all tile palettes): NES 27, SNES 256, Sega Genesis 64, Atari-2600 8
-		<br><br>
 		<input type="submit" value="Upload">
 	</form>
+	<br><br>
+	<a href="https://github.com/DraqueT/NESify_AWS">source code</a>
+	<br> made by Draque
   </body>
 </html>
 
