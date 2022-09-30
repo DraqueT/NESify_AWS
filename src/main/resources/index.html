@@ -52,7 +52,7 @@
   
 	<form action="NesifyServlet" method="post" enctype="multipart/form-data">
 		Select Image to Upload (Max Size 1 MB or 2,000,000 pixels):<input type="file" name="fileName">
-		<br>
+		<br> OR paste in the address of an image from the web: <input id="href_image" type="text" name="href_image" value="""><br><br>
 		<select id="defaultCombo" onchange="setDefaults(this)">
 			<option value="nes">NES Defaults</option>
 			<option value="snes">SNES Defaults</option>

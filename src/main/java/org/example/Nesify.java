@@ -30,19 +30,19 @@ public class Nesify {
     private int pixelRatioCeiling = 0;
 
     public void go(byte[] rawImage) throws Exception {
-    	if (MASTER_PALETTE_SIZE < 2 || MASTER_PALETTE_SIZE > 1023) {
+    	if (MASTER_PALETTE_SIZE < 2 || MASTER_PALETTE_SIZE > 1024) {
     		throw new Exception("Master palette size must be greater than 1 and less than 1024.");
     	}
     	
-    	if (TILE_PALETTE_SIZE < 2 || TILE_PALETTE_SIZE > 255) {
+    	if (TILE_PALETTE_SIZE < 2 || TILE_PALETTE_SIZE > 256) {
     		throw new Exception("Tile palette size must be greater than 1 and less than 256.");
     	}
     	
-    	if (X_RES < 1 || X_RES > 511) {
+    	if (X_RES < 1 || X_RES > 512) {
     		throw new Exception("X resolution size must be greater than 0 and less than 512.");
     	}
     	
-    	if (TILE_SIZE < 1 || TILE_SIZE > 511) {
+    	if (TILE_SIZE < 1 || TILE_SIZE > 512) {
     		throw new Exception("Tile size must be greater than 0 and less than 512.");
     	}
     	

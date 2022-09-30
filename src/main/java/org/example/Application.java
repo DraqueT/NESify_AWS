@@ -8,13 +8,14 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.MultipartConfig;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.URL;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStreamReader;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,7 +30,7 @@ import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 
 @MultipartConfig(fileSizeThreshold=1024*1024*10, 	// 10 MB 
-				maxFileSize=1024*1024*7,      		// 6 MB
+				maxFileSize=1024*1024*6,      		// 6 MB
 				maxRequestSize=1024*1024*100)   	// 100 MB
 public class Application extends AbstractHandler
 {
@@ -71,8 +72,10 @@ public class Application extends AbstractHandler
     }
     
     private void handleHttpNesify(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try {
-			Nesify nesify = new Nesify();
+    	Nesify nesify = new Nesify();
+    	
+    	try {
+			nesify = new Nesify();
 			
 			populateUploads(request);
 			
@@ -81,6 +84,9 @@ public class Application extends AbstractHandler
 			nesify.TILE_SIZE = Integer.parseInt(formFields.get("tile_size"));
 			nesify.X_RES = Integer.parseInt(formFields.get("x_res"));
 			
+			if (formFields.containsKey("href_image") && !formFields.get("href_image").trim().isEmpty()) {
+				rawImage = getFromUrl(formFields.get("href_image"));
+			}
 			
 			nesify.go(rawImage);
 			
@@ -106,11 +112,15 @@ public class Application extends AbstractHandler
 			ServletOutputStream servletoutputstream = response.getOutputStream();
 			servletoutputstream.write(imageInByte);
 			servletoutputstream.flush();
-			
+			System.out.println("SUCCESS");
 		} catch (Exception e) {
 			response.setContentType("text/html");
 			response.getWriter().println("Error: " + e.getLocalizedMessage());
-			// e.printStackTrace(response.getWriter());
+//			System.out.println("MASTER_PALETTE_SIZE: " + nesify.MASTER_PALETTE_SIZE);
+//			System.out.println("TILE_PALETTE_SIZE: " + nesify.TILE_SIZE);
+//			System.out.println("TILE_SIZE: " + nesify.TILE_SIZE);
+//			System.out.println("X_RES: " + nesify.X_RES);
+//			System.out.println("URL: " + formFields.get("href_image"));
 		}
 		
 	}
@@ -130,8 +140,10 @@ public class Application extends AbstractHandler
             if (item.isFormField()) {
             	formFields.put(name, Streams.asString(item.openStream()));
             } else {
-                System.out.println("File field " + name + " with file name "
-                    + item.getName() + " detected.");
+            	if (!name.trim().isEmpty()) {
+	                System.out.println("File field " + name + " with file name "
+	                    + item.getName() + " detected. from " + request.getRemoteAddr());
+            	}
                 
                 // presumes single file uploaded, rewrite to allow for more
                 rawImage = IOUtils.toByteArray(item.openStream());
@@ -159,6 +171,33 @@ public class Application extends AbstractHandler
         } else {
             handleHttpRequest(request, response);
         }
+    }
+    
+    private byte[] getFromUrl(String url) throws IOException {
+    	int maxDownload = 1024*1024*6; // 6MB
+        URL website = new URL(url);
+        
+        System.out.println("Pulling from url: " + url);
+
+        byte[] outBytes = new byte[maxDownload];
+        InputStream stream = website.openStream();
+
+        IOUtils.read(stream, outBytes, 0, maxDownload);
+        int size = stream.read();
+
+        if (size != -1) {
+            throw new IOException("File size too big: " + size);
+        }
+        int lastIndex;
+        for (lastIndex = outBytes.length - 1; lastIndex > 0 && outBytes[lastIndex] == 0; lastIndex--);
+
+        byte finalBytes[] = new byte[lastIndex + 1];
+        
+        for (int i = 0; i <= lastIndex; i++) {
+            finalBytes[i] = outBytes[i];
+        }
+        
+        return finalBytes;
     }
 
     public static void main(String[] args) throws Exception
